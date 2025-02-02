@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Guide {
+  id         String   @db.Uuid @id @default(uuid())
+  title      String
+  slug       String   @unique
+  parentId   String?  @db.Uuid
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  deletedAt  DateTime?
+  order      Int      @default(0)
+  authorId   String   @db.Uuid
+
+  parent     Guide?   @relation("GuideHierarchy", fields: [parentId], references: [id])
+  children   Guide[]  @relation("GuideHierarchy")
+  author     Author   @relation(fields: [authorId], references: [id])
+
+  @@index([parentId])
+}
+
+model Author {
+  id        String   @db.Uuid @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  guides    Guide[]
+}
