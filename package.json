@@ -11,7 +11,8 @@
     "db:stop": "docker stop postgres-dev",
     "db:init": "pnpm dlx prisma migrate dev --name init",
     "db:migrate": "pnpm dlx prisma migrate dev",
-    "db:reset": "pnpm dlx prisma migrate reset --force"
+    "db:reset": "pnpm dlx prisma migrate reset --force",
+    "db:seed": "pnpm dlx prisma db seed"
   },
   "dependencies": {
     "@prisma/client": "6.3.0",
@@ -29,6 +30,10 @@
     "postcss": "^8",
     "prisma": "^6.3.0",
     "tailwindcss": "^3.4.1",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
